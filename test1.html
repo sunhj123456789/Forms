@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+</style>
+<body>
+<h1>test</h1>
+</body>
+<script>
+// 	let rows=5;
+
+// for(i = 1; i <= rows; i++){    
+//      for(i=0;i<rows-i;i++){
+//      	//document.write('&nbsp')
+//      }
+//      for(j=0;j<i;j++){
+//      	document.write('*');
+//      }
+//      document.write('<br>');   
+//      console.log('workgin');
+//   }
+var rows=5;
+var c='*';
+ for (let i = 1; i < rows; i++) {
+        var output = '';
+        for (let j =1; j < rows - i; j++) {
+        	output += ' ';
+        }
+        for (let k = 1; k <= i; k++){
+         output =output+''+ i;
+         //output +='';
+     }
+        console.log(output);  
+    } 
+
+
+</script>
+
+</html>
