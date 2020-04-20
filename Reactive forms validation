@@ -1,0 +1,28 @@
+<div class="row horizontal-center">
+  <div class="col-md-6 ">
+    <form [formGroup]="user" class="form-horizontal form-center" (ngSubmit)="submit()">
+      <div class="form-group" [class.has-error]="user.get('name').touched && user.get('name').invalid">
+        <label class="col-sm-2 col-md-2 controltype">FirstName</label>
+        <div class="col-sm-10 col-md-10">
+          <input type="text" class="form-control" formControlName="name">
+          <!-- <span class ="help-block" *ngIf="f.name.touched">first name required</span>           -->
+          <div class ="help-block" *ngIf="this.user.get('name').hasError('required') && this.user.get('name').touched">name is required</div>          
+          </div>   
+      </div>
+      <input type="submit" class="btn btn-block btn-primary">
+    </form>
+  </div>
+</div>
+
+
+ <!-- <span class ="help-block" *ngIf="user.get('name').touched && user.get('name').errors?.required">first name required</span>
+  <span class ="help-block" *ngIf="user.get('name').touched && user.get('name').errors?.minlength">minumum 2 character is required </span>
+  <span class ="help-block" *ngIf="user.get('name').touched && user.get('name').hasError('minlength')">minumum 2 character required</span>  
+  
+   -->
+
+createForm(){
+this.user=this.fb.group({
+  name:['',[Validators.required,Validators.minLength(2),Validators.maxLength(5)]],
+})
+}
