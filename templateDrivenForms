@@ -1,0 +1,46 @@
+<form #empDetails="ngForm" (ngSubmit)="submit(empDetails)">
+  <div  ngModelGroup="passwordGroup" [class.has-error]="conformpassword1.touched && conformpassword1.invalid">
+  <div class="form-group"[class.has-error]="password1.invalid && password1.touched"
+  [class.has-success]="password1.valid">
+    <label for="fullname" class="control-type" >Password</label>   
+     <input id="fullname" type="text" name="password" class="form-control" [(ngModel)]="password" #password1="ngModel" required (input)="conformpassword1.control.updateValueAndValidity()">
+     <span class="help-block" *ngIf="password1.errors?.required && password1.touched">password is required</span>
+  </div>
+
+  <div class="form-group" [class.has-error]="conformpassword1.invalid && conformpassword1.touched || conformpassword1.errors?.notEqual"
+  [class.has-success]="conformpassword1.valid">
+    <label for="conformPassword" class="control-type" >Conform Password</label>   
+     <input id="conformPassword" appConformPassword="password" type="text" name="conformpassword" class="form-control" [(ngModel)]="conformpassword" #conformpassword1="ngModel" required>
+     <span class="help-block" *ngIf="conformpassword1.errors?.required && conformpassword1.touched ">conform password is required</span>
+      <span class="help-block" *ngIf="conformpassword1.errors?.notEqual && !conformpassword1.errors?.required">password is not match</span>
+  </div>
+</div>
+  
+  <input type="submit" class="btn btn-primary btn-block"
+  [disabled]="empDetails.invalid">
+</form>
+{{empDetails.value|json}}
+///////validators
+import { Directive,Input } from '@angular/core';
+import { Validator, NG_VALIDATORS, AbstractControl } from '@angular/forms';
+
+@Directive({
+  selector: '[appConformPassword]',
+  providers: [
+     { provide: NG_VALIDATORS, useExisting: ConformPasswordDirective, multi: true }
+   ]
+})
+export class ConformPasswordDirective  implements Validator {
+ @Input() appConformPassword:string;
+ 
+  validate(control:AbstractControl):{[key:string]:any} | null
+  {
+  const pwdcontrol=control.parent.get(this.appConformPassword);
+  if(control.value !=pwdcontrol.value){
+    console.log('working');
+    return {'notEqual':true};
+  }
+  return null;
+  }
+}
+
