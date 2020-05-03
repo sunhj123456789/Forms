@@ -1,0 +1,81 @@
+import { Component, TemplateRef, OnInit } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import{FormGroup,FormArray,FormBuilder, Validators} from '@angular/forms';
+// import{
+//   pwdValidators
+// } from './emailvalidator';
+import { AbstractControl } from "@angular/forms";
+
+@Component({
+  selector: 'my-app',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'   
+  ]
+})
+export class AppComponent implements OnInit {
+ user:FormGroup;
+ constructor(private fb:FormBuilder){}
+
+ngOnInit(){
+  this.createForm();
+}
+
+private createForm(){
+  this.user=this.fb.group({     
+      pwd:['',Validators.required],
+      confirmpwd:['',Validators.required],  
+     },{validator:pwdValidators})   
+
+}
+
+submit(user){
+console.log(user.value);
+}
+
+}
+
+function pwdValidators(control:AbstractControl):{[key:string]:any} {    
+  const pwd=control.get('pwd');  
+  const confirmPwd=control.get('confirmpwd');
+  if(confirmPwd.value==''){
+    return null;
+  }
+ if( pwd.value === confirmPwd.value || confirmPwd.pristine ){  
+   return null;
+ }else{
+return  {'notEqual':true};                 
+ }
+  
+
+}
+///////***********html******************/
+<form [formGroup]="user" (ngSubmit)="submit(user)"> 
+  <!---name----> 
+
+
+<div class="form-group" [ngClass]="{'has-error':user.get('pwd').errors?.required && user.get('pwd').touched}">
+  <label class="col-xs-2 control-label">pwd</label>
+  <div class="col-xs-10">
+      <input type="text" class="form-control" formControlName="pwd">
+  </div>  
+  <span class="has-block" *ngIf="user.get('pwd').errors?.required && user.get('pwd').touched">pwd field is required</span>  
+</div> 
+<!---contact preference----->
+
+<div class="form-group" [ngClass]="{'has-error':user.get('confirmpwd').errors?.required && user.get('confirmpwd').touched}">
+  <label class="col-xs-2 control-label">Confirmpwd</label>
+  <div class="col-xs-10">
+      <input type="text" class="form-control" formControlName="confirmpwd">
+  </div>
+  <span class="has-block" *ngIf="user.get('confirmpwd').errors?.required && user.get('confirmpwd').touched">confirm field required</span>
+  <span class="has-block" *ngIf="user.errors?.notEqual && (user.get('confirmpwd').touched ||user.get('confirmpwd').errors?.dirty)">confirm pwd field match  is not match</span>   
+</div>
+
+
+
+
+<div class="btn-toolbar">
+    <button type="submit" class="btn btn-block btn-primary" >Submit</button>
+</div>
+</form>
+
