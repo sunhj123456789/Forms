@@ -1,0 +1,467 @@
+https://stackblitz.com/edit/angular-vkwcfz?file=src%2Fapp%2Fapp.component.ts
+import { Component } from "@angular/core";
+import {
+  FormArray,
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder
+} from "@angular/forms";
+
+@Component({
+  selector: "my-app",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"]
+})
+export class AppComponent {
+  name = "Angular";
+  form: FormGroup;
+  parentSelected: boolean = false;
+  childSelected: boolean = false;
+  data: any = [
+    {
+      cName: "Name 1",
+      relNumbs: [
+        {
+          relnNum: "A12345",
+          disRelnNum: "A12345 [ Test 1]",
+          // isrelnNumSelected: false,
+          egNumbers: [
+            {
+              egNum: "AB29797",
+              egName: "Test2",
+              accountNumbers: [
+                {
+                  acctNbr: "D12345",
+                  acctSubSys: "DDA",
+                  currentEODBal: "3080",
+                  selected: false
+                }
+              ]
+            },
+            {
+              egNum: "XYEKDK123",
+              egName: "Test3",
+              // isegNumSelected: false,
+              accountNumbers: [
+                {
+                  acctNbr: "B12345",
+                  acctSubSys: "INV",
+                  currentEODBal: "48968",
+                  selected: false
+                },
+                {
+                  acctNbr: "C12345",
+                  acctSubSys: "DDA",
+                  currentEODBal: "28151",
+                  selected: false
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      total: 545769705
+    }
+  ];
+
+  data2: Array<CreateProposal> = [
+    {
+      "clientName": "Test Name",
+      "clientId": null,
+      "bankerSoeid": "tet",
+      "bankerName": "freeet",
+      "bankerProductType": "etetee",
+      "createdBySoeid": null,
+      "proposalNo": null,
+      "proposalName": null,
+      "createdOn": null,
+      "counselorSoeid": null,
+      "startDate": null,
+      "riskLevel": null,
+      "currentRiskLevel": null,
+      "status": null,
+      "lastUpdateDate": null,
+      "additionalCash": null,
+      "existingCash": null,
+      "relnNbr": null,
+      "invObjective": null,
+      "riskTolerance": null,
+      "relationshipNumbers": [
+        {
+          "relnNum": "eeteet",
+          "displayRelnNum": "1234",
+          "egNumbers": [
+            {
+              "egNum": "5678",
+              "egName": "Test Name",
+              "accountNumbers": [
+                {
+                  "acctNbr": "3108681399",
+                  "acctSubSys": "",
+                  "accountIdentifier": "",
+                  "riskRatingCIFS": null,
+                  "invObjCIFS": null,
+                  "ratingLevel": null,
+                  "riskRatingCPII": "2",
+                  "invObjCPII": null,
+                  "currentEODBal": "1234",
+                  "proposedInvObjective": null,
+                  "proposedRiskTolerance": null,
+                  "selected": false
+                }
+              ]
+            },
+            {
+              "egNum": "45675",
+              "egName": "Test Name1",
+              "accountNumbers": [
+                {
+                  "acctNbr": "C61050412",
+                  "acctSubSys": "",
+                  "accountIdentifier": "",
+                  "riskRatingCIFS": null,
+                  "invObjCIFS": "",
+                  "ratingLevel": null,
+                  "riskRatingCPII": "",
+                  "invObjCPII": "",
+                  "currentEODBal": "1688391",
+                  "proposedInvObjective": null,
+                  "proposedRiskTolerance": null,
+                  "selected": false
+                },
+                {
+                  "acctNbr": "9136998151",
+                  "acctSubSys": "",
+                  "accountIdentifier": "",
+                  "riskRatingCIFS": null,
+                  "invObjCIFS": null,
+                  "ratingLevel": null,
+                  "riskRatingCPII": "",
+                  "invObjCPII": null,
+                  "currentEODBal": "2151",
+                  "proposedInvObjective": null,
+                  "proposedRiskTolerance": null,
+                  "selected": false
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "clientType": null,
+      "alternatives": "false",
+      "business": null,
+      "language": null,
+      "currency": null,
+      "aum": null,
+      "newMoney": null,
+      "timeHorizon": null,
+      "mode": null,
+      "alternativesIncluded": null,
+      "userRoleId": null,
+      "userId": null,
+      "total": 1700633,
+      "annualPortReview": null,
+      "investorRating": null,
+      "proposedLoanableValue": null,
+      "proposedInvObjective": null,
+      "proposedRiskTolerance": null
+    }
+  ]
+
+  compare = [{
+    proposalNo: "",
+    relnNo: "2242",
+    egNo: "22232",
+    acctNo: "3108681399",
+    currBal: "404312",
+    acctType: "",
+    investorRating: "",
+    proposedInvObjective: "",
+    proposedRiskTolerance: ""
+  },
+  {
+    proposalNo: "",
+    relnNo: "r33r",
+    egNo: "etetet",
+    acctNo: "9136998151",
+    currBal: "eteet",
+    acctType: "etet",
+    investorRating: "",
+    proposedInvObjective: "etete",
+    proposedRiskTolerance: "etetee"
+  },
+  // {
+  //   proposalNo: "",
+  //   relnNo: "r33r",
+  //   egNo: "etetet",
+  //   acctNo: "C61050412",
+  //   currBal: "eteet",
+  //   acctType: "etet",
+  //   investorRating: "",
+  //   proposedInvObjective: "etete",
+  //   proposedRiskTolerance: "etetee"
+  // } 
+  ]
+
+
+  testArr: any = [];
+  toatalBalance: any;
+  allBalance: any;
+
+  constructor(private fb: FormBuilder) {
+
+  }
+
+  ngOnInit() {
+ 
+
+
+
+   this.vinoth();
+
+    let d = this.data2[0].relationshipNumbers.map(item=>{
+   const all =  item.egNumbers.map(sItem=>sItem.accountNumbers.map(item1=>item1.selected))
+   return all.flat()
+ })
+  const allSelected = d.flat().every(i=>i);
+console.log(this.data2[0], 'asdasdasdad');
+
+    const relNumbs = this.data2[0].relationshipNumbers.map(current => {
+      const egNumbersArray = current.egNumbers.map(item => {
+        const accNumArray = item.accountNumbers.map(accNum => {
+          return { ...accNum };
+        });
+        return { ...item, accountNumbers: accNumArray, isegNumSelected: true };
+      });
+      return { ...current, isrelnNumSelected: false };
+    });
+
+    this.data = this.data.map(parent => {
+      return { ...parent, relNumbs }
+    });
+// console.log();
+    const relNumbsData = this.data2[0].relationshipNumbers.map((control,index) => {
+ 
+      return this.fb.group({
+        displayRelnNum: this.fb.control(control.displayRelnNum),
+        relnNum: this.fb.control(control.relnNum),
+        isrelnNumSelected: [allSelected],
+        egNumbers: this.fb.array(this.createegNumbersForm(control.egNumbers))
+      });
+    });
+
+    this.form = this.fb.group({
+      fullArray: this.fb.array(relNumbsData)
+    });
+    
+  console.log(this.form.value);
+  }
+
+  
+vinoth() {
+    this.compare.forEach(compareObj => {
+      this.data2.forEach(obj => {
+        obj.relationshipNumbers.forEach(custObj => {
+          custObj.egNumbers.forEach(numObj => {
+            numObj.accountNumbers.forEach(accObj => {
+              if (accObj.acctNbr === compareObj.acctNo) {
+                accObj.selected = true;
+              }
+            })
+          })
+        })
+      });
+    });
+    console.log('test', this.data2);
+  }
+
+
+
+  selectSubItem(i, j) {
+    const { isegNumSelected } = (this.fullFormArray
+      .at(i)
+      .get("egNumbers") as FormArray).controls[j].value;
+    (this.fullFormArray.at(i).get("egNumbers") as FormArray).controls[j]
+      .get("accountNumbers")
+      .controls.forEach(ctrl => {
+        ctrl.patchValue({
+          selected: isegNumSelected
+        });
+      });
+
+    const isAllSubItemSelected = (this.fullFormArray
+      .at(i)
+      .get("egNumbers") as FormArray).controls
+      .map(item => item.value)
+      .every(item => item.isegNumSelected);
+
+    if (isAllSubItemSelected) {
+      this.fullFormArray.at(i).patchValue({
+        isrelnNumSelected: true
+      });
+    } else if (!isAllSubItemSelected) {
+      this.fullFormArray.at(i).patchValue({
+        isrelnNumSelected: false
+      });
+    }
+  }
+  selectSecondSubItem(i, j, k, z) {
+    console.log(z.value)
+    const isaAllcctNbrSelected = (this.fullFormArray
+      .at(i)
+      .get("egNumbers") as FormArray).controls[j]
+      .get("accountNumbers")
+      .value.every(value => value.selected);
+
+    const isAllSubItemSelected = (this.fullFormArray
+      .at(i)
+      .get("egNumbers") as FormArray).value
+      .flatMap(item => item.accountNumbers)
+      .every(item => item.selected);
+
+    if (isAllSubItemSelected) {
+      this.fullFormArray.at(i).patchValue({
+        isrelnNumSelected: true
+      });
+    } else if (!isAllSubItemSelected) {
+      this.fullFormArray.at(i).patchValue({
+        isrelnNumSelected: false
+      });
+    }
+
+    if (isaAllcctNbrSelected) {
+      (this.fullFormArray.at(i).get("egNumbers") as FormArray).controls[
+        j
+      ].patchValue({
+        isegNumSelected: true
+      });
+    } else {
+      (this.fullFormArray.at(i).get("egNumbers") as FormArray).controls[
+        j
+      ].patchValue({
+        isegNumSelected: false
+      });
+    }
+
+    const isAllisegNumSelected = (this.fullFormArray
+      .at(i)
+      .get("egNumbers") as FormArray).value;
+  }
+  selectAll(i) {
+    (this.fullFormArray.at(i).get("egNumbers") as FormArray).controls.forEach(
+      item => {
+        const { isrelnNumSelected } = this.fullFormArray.at(i).value;
+        item.patchValue({
+          isegNumSelected: isrelnNumSelected
+        });
+        item.get("accountNumbers").controls.forEach(sItem => {
+          sItem.patchValue({
+            selected: isrelnNumSelected
+          });
+        });
+      }
+    );
+  }
+
+  get fullFormArray() {
+    return this.form.get("fullArray") as FormArray;
+  }
+
+  createegNumbersForm(egbumbers) {
+
+
+   const egbumbersSelected =  egbumbers.map(item=>{
+      return item.accountNumbers.every(sItem=>sItem.selected);
+    });  
+
+console.log( egbumbersSelected, 'EggNum');
+    const egNumbs = egbumbers.map((control,index) => {
+      return this.fb.group({
+        egNum: this.fb.control(control.egNum),
+        egName: this.fb.control(control.egName),
+        isegNumSelected: [egbumbersSelected[index]],
+        accountNumbers: this.fb.array(
+          this.createAccountNumbers(control.accountNumbers)
+        )
+      });
+    });
+    return egNumbs;
+  }
+
+  createAccountNumbers(accNums) {
+    const accountNumbs = accNums.map(control => {
+      return this.fb.group({
+        acctNbr: this.fb.control(control.acctNbr),
+        acctSubSys: this.fb.control(control.acctSubSys),
+        accountIdentifier: this.fb.control(control.accountIdentifier),
+        riskRatingCIFS: this.fb.control(control.riskRatingCIFS),
+        invObjCIFS: this.fb.control(control.invObjCIFS),
+        ratingLevel: this.fb.control(control.ratingLevel),
+        riskRatingCPII: this.fb.control(control.riskRatingCPII),
+        invObjCPII: this.fb.control(control.invObjCPII),
+        currentEODBal: this.fb.control(control.currentEODBal),
+        proposedInvObjective: this.fb.control(control.proposedInvObjective),
+        proposedRiskTolerance: this.fb.control(control.proposedRiskTolerance),
+        selected: [control.selected, Validators.required],
+      });
+    });
+    return accountNumbs;
+  }
+
+  get Controls() {
+    return this.form.get("fullArray");
+  }
+
+  onChange(data) {
+    this.testArr.push(data);
+    this.allBalance = this.testArr.map(res => Number(res.currentEODBal));
+    this.toatalBalance = this.allBalance.reduce(
+      (value, accumulator) => value + accumulator,
+      0
+    );
+    console.log(this.toatalBalance);
+  }
+
+}
+///////////////////html****/////////////////
+<form [formGroup]="form">
+	<div formArrayName="fullArray" *ngFor="let q of Controls.controls;let i = index" class="outer-section">
+		<div [formGroupName]="i">
+			<input formControlName="isrelnNumSelected" 
+      (change)="selectAll(i)"
+      type="checkbox">{{q.get('displayRelnNum').value}}
+			<div formArrayName="egNumbers" *ngFor="let s of q.get('egNumbers').controls;let j = index"
+				class="outer-section">
+				<div [formGroupName]="j">
+					<div>
+						<input
+              (change)="selectSubItem(i, j)"
+            formControlName="isegNumSelected"
+             type="checkbox">{{s.get('egNum').value}} - {{s.get('egName').value}}
+                      </div>
+
+						<div class="outer-section">
+							<div formArrayName="accountNumbers"
+								*ngFor="let z of s.get('accountNumbers').controls;let k = index">
+								<div [formGroupName]="k">
+									<input 
+                  (change)="selectSecondSubItem(i,j,k,z)"
+                  formControlName="selected"
+                  type="checkbox">{{z.get('acctNbr').value}} <span style="margin-left: 100px"> ${{z.get('currentEODBal').value | number}} </span>
+                      </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<pre>{{ form.status  }}</pre>
+</form>
+
+<button type="text">Next</button>
+<br>
+<br>
+
+<button (click)="compareArray()">Compare</button>
